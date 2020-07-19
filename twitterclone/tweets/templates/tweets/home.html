@@ -1,0 +1,59 @@
+﻿{% extends "base.html" %}
+{% block head_title %}
+     - Home
+{% endblock head_title %}
+{% block content %}
+<div class="row text-center">
+    <div class="col">
+        <h1>Welcome to Tweetme!</h1>
+    </div>
+    
+</div>
+    
+<div class="row" id="tweets">
+    Loading...
+</div>
+
+<script>
+    const tweetsElement = document.getElementById("tweets") //get an html element
+    const xhr = new XMLHttpRequest() //létrehozok egy új requestet
+    const method = 'GET' // 'POST'
+    const url = "/tweets" //innen kérem le az adatot
+    const responseType = "json"
+
+    function handleDidLike(tweet_id, currentCount) {
+        console.log(tweet_id, currentCount)
+    }
+
+    function likeBtn(tweet) {
+        return "<button class='btn btn-primary btn-sm' onclick=handleDidLike(" + tweet.id +"," + tweet.likes + ")>" + tweet.likes + " Like</button>"
+    }
+
+    function formatTweetElement(tweet) {
+
+        var formattedTweet = "<div class='col-12 col-md-10 mx-auto colmb-4 border rounded py-3 tweet' id='tweet-" + tweet.id
+            + "'><p>" + tweet.content +
+                 "</p><div class='btn-group'>" + likeBtn(tweet) +
+                "</div></div>"
+        return formattedTweet
+    }
+    xhr.responseType = responseType //a requesttel is tudatom hogy json adat jön vissza
+    xhr.open(method, url) //
+    xhr.onload = function () { //ezt csinálom az adattal amit visszakapok
+        //const never change, var and let can change
+        const serverResponse = xhr.response
+        const listedItems = serverResponse.response //itt a response a django view-ban lévő dictionary key
+        console.log(listedItems)
+        var finalTweetStr = ""
+        var i;
+        for (i = 0; i < listedItems.length; i++) {
+            var tweetObj = listedItems[i]
+            console.log(tweetObj)
+            var currentItem = formatTweetElement(tweetObj)
+            finalTweetStr += currentItem
+        }
+        tweetsElement.innerHTML = finalTweetStr
+    }
+    xhr.send() //triggering the request, ez indítja el a requestet
+</script>
+{% endblock content %}

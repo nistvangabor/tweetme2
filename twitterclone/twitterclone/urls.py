@@ -17,10 +17,15 @@ Including another URLconf
 """
 
 # Uncomment next two lines to enable admin:
-#from django.contrib import admin
-#from django.urls import path
+from django.contrib import admin
+from django.urls import path, re_path
+from tweets.views import home_view, tweet_detail_view, tweet_list_view
+
 
 urlpatterns = [
     # Uncomment the next line to enable the admin:
-    #path('admin/', admin.site.urls)
+    path('admin/', admin.site.urls),
+    path('', home_view),
+    path('tweets', tweet_list_view),
+    path('tweets/<int:tweet_id>', tweet_detail_view),
 ]

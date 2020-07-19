@@ -14,6 +14,7 @@ import os
 import posixpath
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+#this is the same level where manage.py is
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tweets',
 ]
 
 # Middleware framework
@@ -58,7 +60,7 @@ ROOT_URLCONF = 'twitterclone.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "tweets/templates/tweets")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
